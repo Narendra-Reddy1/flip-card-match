@@ -1,8 +1,9 @@
-namespace BenStudios.EventSystem
+namespace CardGame
 {
     public enum EventID
     {
-
-
+        OnCardFlipped,
+        OnCardMatchSuccess,
+        OnCardMatchFailed,
     }
 }

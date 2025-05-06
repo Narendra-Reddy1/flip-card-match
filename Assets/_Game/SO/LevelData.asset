@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca716af09d825ab44984d9ccdfc7805b, type: 3}
   m_Name: LevelData
   m_EditorClassIdentifier: 
-  _gridSize: {x: 0, y: 0}
-  _uniqueSetsToSpawn: 0
+  _gridSize: {x: 4, y: 6}
+  _uniqueSetsToSpawn: 2

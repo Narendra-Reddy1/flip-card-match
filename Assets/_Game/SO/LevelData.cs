@@ -12,6 +12,8 @@ namespace CardGame
         [SerializeField] private int _uniqueSetsToSpawn;
 
 
+        public int UniqueSets => _uniqueSetsToSpawn;
+        public int MaxUniquSets => (_gridSize.x * _gridSize.y) / 2;
         public Vector2Int GridSize => _gridSize;
 
 
@@ -26,7 +28,7 @@ namespace CardGame
             }
             if (_uniqueSetsToSpawn > (totalCount) / 2)
             {
-                Debug.LogError($"Unique Set count should not be more than half of the totalCount. Resetting it");
+                Debug.LogError($"Unique Set count should not be more than half of the totalCount. Resetting it..Max {totalCount / 2}");
                 _uniqueSetsToSpawn = totalCount / 2;
             }
         }

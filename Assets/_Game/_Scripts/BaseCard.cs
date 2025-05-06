@@ -14,13 +14,13 @@ namespace CardGame
         protected int _iconId;
         protected Sprite _targetIcon;
         protected Sprite _backFaceIcon;
-        protected bool _isSelected = false;
+        protected bool _isFlipped = false;
         protected bool _isInteractable = false;
 
         public bool IsInteractable => _isInteractable;
 
         public int UniqueId => _uniqueId;
-        public int IconId => _uniqueId;
+        public int IconId => _iconId;
         public Sprite TargetIcon => _targetIcon;
         public Sprite BackFaceIcon => _backFaceIcon;
 
@@ -39,6 +39,21 @@ namespace CardGame
         public virtual void Flip()
         {
 
+        }
+        public virtual void OnMatchSuccess()
+        {
+
+        }
+        public virtual void OnMatchFail()
+        {
+
+        }
+        public virtual void ShowFrontFace()
+        {
+
+        }
+        public virtual void ShowBackFace()
+        {
         }
     }
 

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 
-namespace BenStudios.EventSystem
+namespace CardGame
 {
     public static class GlobalEventHandler
     {

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using AYellowpaper.SerializedCollections;
-using System;
+using System.Linq;
+using System.Collections.ObjectModel;
+
 namespace CardGame
 {
     public class CardsManger : MonoBehaviour
@@ -12,33 +14,84 @@ namespace CardGame
         [SerializeField] private GridLayoutGroup gridLayoutGroup;
         [SerializeField] private RectTransform _cardsParent;
         [SerializeField] private LevelData data;
+        [SerializeField] private SpriteDatabase _spriteDatabase;
 
         public Vector2 minCellSize = Vector2.one;
         public Vector2 maxCellSize = Vector2.one;
         private List<BaseCard> _totalCards = new List<BaseCard>();
+
+
+        private void OnEnable()
+        {
+            GlobalEventHandler.AddListener(EventID.OnCardMatchSuccess, Callback_On_Card_Match_Success);
+        }
+        private void OnDisable()
+        {
+            GlobalEventHandler.RemoveListener(EventID.OnCardMatchSuccess, Callback_On_Card_Match_Success);
+        }
+
+
+
         void Start()
         {
             Init(data);
         }
 
-        //this will take the level data
+        ///this will take the level data
         ///spawns the number of cards
         /// initialize each with an icon id, unique id, and sprite and backface sprite
         public void Init(LevelData levelData)
         {
             //first get the images...for the grid.
-            int iconId = 0;
-            for (int i = 0; i < levelData.GridSize.x * levelData.GridSize.y; i++)
+            int totalGridCells = levelData.GridSize.x * levelData.GridSize.y;
+            var sprites = _spriteDatabase.GetCardSprites();
+            List<Sprite> spritepairs = GetSpritePairs(sprites, totalGridCells, levelData.UniqueSets);
+            Debug.Log($"SPrite paris...{spritepairs.Count}");
+            for (int i = 0; i < totalGridCells; i++)
             {
                 BaseCard card = Instantiate(_cardPrefab, _cardsParent);
-                card.Init(i, iconId, null, null);
+                card.Init(i, sprites.IndexOf(spritepairs[i]), spritepairs[i], null);
                 _totalCards.Add(card);
+                //card.ShowFrontFace();
             }
 
             Vector2 cellSize = CalculateFit(this.gridLayoutGroup, this._cardsParent, levelData.GridSize);
             gridLayoutGroup.cellSize = cellSize;
         }
+        public List<Sprite> GetSpritePairs(ReadOnlyCollection<Sprite> _cardSprites, int totalGridCells, int uniqueSet)
+        {
+            if (totalGridCells % 2 != 0)
+                throw new System.ArgumentException("Grid must have even number of cells");
 
+            int totalPairs = totalGridCells / 2;
+
+            if (uniqueSet > totalPairs)
+                throw new System.ArgumentException("uniqueSet cannot be more than total pairs");
+
+
+            var shuffled = _cardSprites.OrderBy(x => Random.value).ToList();
+
+
+            List<Sprite> selected = shuffled.Take(uniqueSet).ToList();
+
+
+            List<Sprite> result = new List<Sprite>();
+            foreach (var sprite in selected)
+            {
+                result.Add(sprite);
+                result.Add(sprite);
+            }
+            int pairsToAdd = totalPairs - uniqueSet;
+            for (int i = 0; i < pairsToAdd; i++)
+            {
+                var duplicate = selected[Random.Range(0, selected.Count)];
+                result.Add(duplicate);
+                result.Add(duplicate);
+            }
+            result = result.OrderBy(x => Random.value).ToList();
+
+            return result;
+        }
 
         public Vector2 CalculateFit(
         GridLayoutGroup grid,
@@ -137,21 +190,13 @@ namespace CardGame
             return (Mathf.CeilToInt(childCount / (float)colsGuess), colsGuess);
         }
 
-
-    }
-
-
-
-    public enum CardType
-    {
-        NormalCard,
-    }
-    public class SpriteDatabase
-    {
-        [SerializeField] private SerializedDictionary<CardType, Sprite> _cardTypeToCardBackFaceIcon;
-        public Sprite GetCardBackFace(CardType cardType)
+        private void Callback_On_Card_Match_Success(object args)
         {
-            return _cardTypeToCardBackFaceIcon[cardType];
+            var cardsTuple = ((BaseCard, BaseCard))args;
+            //remove those cards from the list.
+            _totalCards.Remove(cardsTuple.Item1);
+            _totalCards.Remove(cardsTuple.Item2);
         }
     }
+
 }
