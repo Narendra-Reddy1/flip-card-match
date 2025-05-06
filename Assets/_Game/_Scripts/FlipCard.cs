@@ -49,6 +49,8 @@ namespace CardGame
             {
                 _frontFaceParent.gameObject.SetActive(false);
                 transform.DORotate(Vector3.zero, .2f);
+                _isFlipped = false;
+
             };
         }
 
@@ -72,7 +74,6 @@ namespace CardGame
             DOVirtual.DelayedCall(.5f, () =>
             {
                 ShowBackFace();
-                _isFlipped = false;
                 //GlobalVariables.canTakeInput = true;
             });
             Debug.Log("FAIL uid" + UniqueId + " " + _iconId);

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CardGame
 {
     public class MatchHandler : MonoBehaviour
     {
-        [SerializeField] private CardsManger _cardsManager;
-        private Queue<BaseCard> _flippedCards = new Queue<BaseCard>();
+        private List<BaseCard> _flippedCards = new List<BaseCard>();
 
         private void OnEnable()
         {
@@ -22,26 +22,27 @@ namespace CardGame
         private void Callback_On_Card_Flipped(object args)
         {
             BaseCard flippedCard = args as BaseCard;
-            if (_flippedCards.Count == 0)
+            if (_flippedCards.Count < Konstants.MIN_CARDS_TO_MATCH - 1)
             {
-                _flippedCards.Enqueue(flippedCard);
+                _flippedCards.Add(flippedCard);
             }
             else
             {
-                var oldCard = _flippedCards.Dequeue();
-                if (oldCard.IconId != flippedCard.IconId)
+                _flippedCards.Add(flippedCard);
+                if (_flippedCards.Any(x => x.IconId != flippedCard.IconId))
                 {
                     //GlobalVariables.canTakeInput = false;
-                    oldCard.OnMatchFail();
-                    flippedCard.OnMatchFail();
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, (oldCard, flippedCard));
+                    foreach (var card in _flippedCards)
+                        card.OnMatchFail();
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, new List<BaseCard>(_flippedCards));
                 }
                 else
                 {
-                    oldCard.OnMatchSuccess();
-                    flippedCard.OnMatchSuccess();
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, (oldCard, flippedCard));
+                    foreach (var card in _flippedCards)
+                        card.OnMatchSuccess();
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, new List<BaseCard>(_flippedCards));
                 }
+                _flippedCards.Clear();
             }
         }
     }

@@ -16,7 +16,7 @@ namespace CardGame
         protected Sprite _targetIcon;
         protected Sprite _backFaceIcon;
         protected bool _isFlipped = false;
-        protected bool _isInteractable = false;
+        protected bool _isInteractable = true;
 
         public bool IsInteractable => _isInteractable;
 

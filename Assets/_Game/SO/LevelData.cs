@@ -13,7 +13,7 @@ namespace CardGame
 
 
         public int UniqueSets => _uniqueSetsToSpawn;
-        public int MaxUniquSets => (_gridSize.x * _gridSize.y) / 2;
+        public int MaxUniquSets => (_gridSize.x * _gridSize.y) / Konstants.MIN_CARDS_TO_MATCH;
         public Vector2Int GridSize => _gridSize;
 
 
@@ -22,14 +22,18 @@ namespace CardGame
         private void OnValidate()
         {
             int totalCount = _gridSize.x * _gridSize.y;
-            if (totalCount % 2 != 0)
+            if (totalCount % Konstants.MIN_CARDS_TO_MATCH != 0)
             {
                 Debug.LogError($"Total Item Count should not be a ODD number. Give appropriate grid size");
+                Debug.ClearDeveloperConsole();
+                Debug.Break();
             }
-            if (_uniqueSetsToSpawn > (totalCount) / 2)
+            if (_uniqueSetsToSpawn > (totalCount) / Konstants.MIN_CARDS_TO_MATCH)
             {
-                Debug.LogError($"Unique Set count should not be more than half of the totalCount. Resetting it..Max {totalCount / 2}");
-                _uniqueSetsToSpawn = totalCount / 2;
+                Debug.LogError($"Unique Set count should not be more than half of the totalCount. Resetting it..Max {totalCount / Konstants.MIN_CARDS_TO_MATCH}");
+                _uniqueSetsToSpawn = totalCount / Konstants.MIN_CARDS_TO_MATCH;
+                Debug.ClearDeveloperConsole();
+                Debug.Break();
             }
         }
 

@@ -60,10 +60,10 @@ namespace CardGame
         }
         public List<Sprite> GetSpritePairs(ReadOnlyCollection<Sprite> _cardSprites, int totalGridCells, int uniqueSet)
         {
-            if (totalGridCells % 2 != 0)
+            if (totalGridCells % Konstants.MIN_CARDS_TO_MATCH != 0)
                 throw new System.ArgumentException("Grid must have even number of cells");
 
-            int totalPairs = totalGridCells / 2;
+            int totalPairs = totalGridCells / Konstants.MIN_CARDS_TO_MATCH;
 
             if (uniqueSet > totalPairs)
                 throw new System.ArgumentException("uniqueSet cannot be more than total pairs");
@@ -78,15 +78,20 @@ namespace CardGame
             List<Sprite> result = new List<Sprite>();
             foreach (var sprite in selected)
             {
-                result.Add(sprite);
-                result.Add(sprite);
+                for (int i = 0; i < Konstants.MIN_CARDS_TO_MATCH; i++)
+                {
+                    result.Add(sprite);
+                }
             }
             int pairsToAdd = totalPairs - uniqueSet;
             for (int i = 0; i < pairsToAdd; i++)
             {
                 var duplicate = selected[Random.Range(0, selected.Count)];
-                result.Add(duplicate);
-                result.Add(duplicate);
+                for (int j = 0; j < Konstants.MIN_CARDS_TO_MATCH; j++)
+                {
+                    result.Add(duplicate);
+                    result.Add(duplicate);
+                }
             }
             result = result.OrderBy(x => Random.value).ToList();
 
@@ -192,10 +197,9 @@ namespace CardGame
 
         private void Callback_On_Card_Match_Success(object args)
         {
-            var cardsTuple = ((BaseCard, BaseCard))args;
-            //remove those cards from the list.
-            _totalCards.Remove(cardsTuple.Item1);
-            _totalCards.Remove(cardsTuple.Item2);
+            var matchedCards = (List<BaseCard>)args;
+            foreach (var card in matchedCards)
+                _totalCards.Remove(card);
         }
     }
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9185024043537591407}
   - component: {fileID: 9185024043537591406}
   - component: {fileID: 9185024043537591392}
+  - component: {fileID: 6182675414643262415}
   m_Layer: 5
   m_Name: FlipCard
   m_TagString: Untagged
@@ -90,8 +91,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a44923bb3e0bc7f4ca6417c2873b9419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _image: {fileID: 9185024045217802458}
+  _targetImg: {fileID: 9185024045217802458}
+  _canvasGroup: {fileID: 6182675414643262415}
   _frontFaceParent: {fileID: 9185024045138953056}
+--- !u!225 &6182675414643262415
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9185024043537591404}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9185024045138953071
 GameObject:
   m_ObjectHideFlags: 0
