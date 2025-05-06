@@ -9,7 +9,8 @@ namespace CardGame
 
     public class BaseCard : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        [SerializeField] protected Image _image;
+        [SerializeField] protected Image _targetImg;
+        [SerializeField] protected CanvasGroup _canvasGroup;
         protected int _uniqueId;
         protected int _iconId;
         protected Sprite _targetIcon;
@@ -54,6 +55,10 @@ namespace CardGame
         }
         public virtual void ShowBackFace()
         {
+        }
+        public virtual void ToggleInteractability(bool value)
+        {
+            _isInteractable = value;
         }
     }
 

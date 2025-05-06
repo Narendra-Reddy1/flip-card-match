@@ -3,27 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace CardGame
 {
 
     public class FlipCard : BaseCard
     {
+
         [SerializeField] private Transform _frontFaceParent;
+
         public override void Init(int uniqueId, int iconId, Sprite targetIcon, Sprite backIcon)
         {
             this._uniqueId = uniqueId;
             this._iconId = iconId;
             _targetIcon = targetIcon;
             _backFaceIcon = backIcon;
-            _image.sprite = _targetIcon;
+            _targetImg.sprite = _targetIcon;
         }
 
 
         public override void OnPointerDown(PointerEventData eventData)
         {
             //if (!GlobalVariables.canTakeInput) return;
-            if (_isFlipped) return;
+            if (_isFlipped || !_isInteractable) return;
             _isFlipped = true;
             Flip();
         }
@@ -48,6 +51,7 @@ namespace CardGame
                 transform.DORotate(Vector3.zero, .2f);
             };
         }
+
 
 
         public override void Flip()
