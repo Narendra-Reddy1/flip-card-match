@@ -6,6 +6,6 @@ namespace CardGame
     public static class GlobalVariables
     {
 
-        public static bool canTakeInput = false;
+        public static bool canTakeInput = true;
     }
 }
