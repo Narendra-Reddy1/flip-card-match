@@ -22,6 +22,11 @@ namespace CardGame
             GlobalEventHandler.RemoveListener(EventID.OnCardMatchSuccess, Callback_On_Match_Success);
         }
 
+        private IEnumerator Start()
+        {
+            yield return new WaitUntil(() => PlayerDataManager.IsPlayerDataLoaded());
+        }
+
         private void Callback_On_Match_Success(object args)
         {
             ///WHY??? 

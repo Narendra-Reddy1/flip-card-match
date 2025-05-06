@@ -12,7 +12,7 @@ namespace CardGame
     {
 
         [SerializeField] private Transform _frontFaceParent;
-
+        private Vector3 _rightAngle = new Vector3(0, 90, 0);
         public override void Init(int uniqueId, int iconId, Sprite targetIcon, Sprite backIcon)
         {
             this._uniqueId = uniqueId;
@@ -26,31 +26,30 @@ namespace CardGame
         public override void OnPointerDown(PointerEventData eventData)
         {
             //if (!GlobalVariables.canTakeInput) return;
-            if (CurrentState is CardState.Flipped || !_isInteractable) return;
-            _cardState = CardState.Flipped;
+            if (CurrentState is CardState.Revealed || CurrentState is CardState.Matched) return;
+            _cardState = CardState.Revealed;
             Flip();
         }
-        public override void OnPointerUp(PointerEventData eventData)
-        {
+        public override void OnPointerUp(PointerEventData eventData) { }
 
-        }
-        private Vector3 rightAngle = new Vector3(0, 90, 0);
+
+
         public override void ShowFrontFace()
         {
-            transform.DORotate(rightAngle, .2f).onComplete += () =>
+            transform.DORotate(_rightAngle, .2f).onComplete += () =>
             {
                 _frontFaceParent.gameObject.SetActive(true);
                 transform.DORotate(Vector3.zero, .2f);
-                _cardState = CardState.Flipped;
+                _cardState = CardState.Revealed;
             };
         }
         public override void ShowBackFace()
         {
-            transform.DORotate(rightAngle, .2f).onComplete += () =>
+            transform.DORotate(_rightAngle, .2f).onComplete += () =>
             {
                 _frontFaceParent.gameObject.SetActive(false);
                 transform.DORotate(Vector3.zero, .2f);
-                _cardState = CardState.UnFlipped;
+                _cardState = CardState.Hidden;
             };
         }
 

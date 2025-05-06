@@ -15,12 +15,11 @@ namespace CardGame
         protected int _iconId;
         protected Sprite _targetIcon;
         protected Sprite _backFaceIcon;
-        protected bool _isInteractable = true;
-        protected CardState _cardState = CardState.UnFlipped;
+        protected CardState _cardState = CardState.Hidden;
 
 
         public CardState CurrentState => _cardState;
-        public bool IsInteractable => _isInteractable;
+        public bool IsInteractable => CurrentState == CardState.Hidden;
         public int UniqueId => _uniqueId;
         public int IconId => _iconId;
         public Sprite TargetIcon => _targetIcon;
@@ -55,13 +54,7 @@ namespace CardGame
         {
 
         }
-        public virtual void ShowBackFace()
-        {
-        }
-        public virtual void ToggleInteractability(bool value)
-        {
-            _isInteractable = value;
-        }
+        public virtual void ShowBackFace() { }
     }
 
 }

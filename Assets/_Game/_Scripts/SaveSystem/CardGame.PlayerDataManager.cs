@@ -68,8 +68,8 @@ namespace CardGame
     }
     public enum CardState
     {
-        Flipped,
+        Revealed,
         Matched,
-        UnFlipped,
+        Hidden,
     }
 }
