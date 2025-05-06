@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace CardGame
 {
@@ -29,18 +30,18 @@ namespace CardGame
             else
             {
                 _flippedCards.Add(flippedCard);
+                List<BaseCard> cardsListCopy = new List<BaseCard>(_flippedCards);
                 if (_flippedCards.Any(x => x.IconId != flippedCard.IconId))
                 {
-                    //GlobalVariables.canTakeInput = false;
-                    foreach (var card in _flippedCards)
+                    foreach (BaseCard card in _flippedCards)
                         card.OnMatchFail();
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, new List<BaseCard>(_flippedCards));
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, cardsListCopy);
                 }
                 else
                 {
-                    foreach (var card in _flippedCards)
+                    foreach (BaseCard card in _flippedCards)
                         card.OnMatchSuccess();
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, new List<BaseCard>(_flippedCards));
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, cardsListCopy);
                 }
                 _flippedCards.Clear();
             }

@@ -26,8 +26,8 @@ namespace CardGame
         public override void OnPointerDown(PointerEventData eventData)
         {
             //if (!GlobalVariables.canTakeInput) return;
-            if (_isFlipped || !_isInteractable) return;
-            _isFlipped = true;
+            if (CurrentState is CardState.Flipped || !_isInteractable) return;
+            _cardState = CardState.Flipped;
             Flip();
         }
         public override void OnPointerUp(PointerEventData eventData)
@@ -41,6 +41,7 @@ namespace CardGame
             {
                 _frontFaceParent.gameObject.SetActive(true);
                 transform.DORotate(Vector3.zero, .2f);
+                _cardState = CardState.Flipped;
             };
         }
         public override void ShowBackFace()
@@ -49,8 +50,7 @@ namespace CardGame
             {
                 _frontFaceParent.gameObject.SetActive(false);
                 transform.DORotate(Vector3.zero, .2f);
-                _isFlipped = false;
-
+                _cardState = CardState.UnFlipped;
             };
         }
 
@@ -58,14 +58,13 @@ namespace CardGame
 
         public override void Flip()
         {
-            //update image here.
-            //trigger event onFlip.
             ShowFrontFace();
             GlobalEventHandler.TriggerEvent(EventID.OnCardFlipped, this);
         }
         public override void OnMatchSuccess()
         {
             //Show relted animation...
+            _cardState = CardState.Matched;
             Debug.Log("success uid" + UniqueId + " " + _iconId);
         }
         public override void OnMatchFail()
@@ -74,7 +73,6 @@ namespace CardGame
             DOVirtual.DelayedCall(.5f, () =>
             {
                 ShowBackFace();
-                //GlobalVariables.canTakeInput = true;
             });
             Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
         }

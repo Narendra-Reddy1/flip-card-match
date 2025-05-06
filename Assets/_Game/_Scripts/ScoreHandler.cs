@@ -12,6 +12,8 @@ namespace CardGame
 
         private int _score;
 
+        public int Score => _score;
+
         private void OnEnable()
         {
             GlobalEventHandler.AddListener(EventID.OnCardMatchSuccess, Callback_On_Match_Success);

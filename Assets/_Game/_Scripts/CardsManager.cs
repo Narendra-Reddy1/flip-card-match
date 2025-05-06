@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace CardGame
 {
-    public class CardsManger : MonoBehaviour
+    public class CardsManager : MonoBehaviour
     {
         [SerializeField] private BaseCard _cardPrefab;
         [SerializeField] private GridLayoutGroup gridLayoutGroup;
@@ -20,6 +20,7 @@ namespace CardGame
         public Vector2 maxCellSize = Vector2.one;
         private List<BaseCard> _totalCards = new List<BaseCard>();
 
+        public IReadOnlyCollection<BaseCard> TotalCards => _totalCards.AsReadOnly();
 
         private void OnEnable()
         {
@@ -78,20 +79,13 @@ namespace CardGame
             List<Sprite> result = new List<Sprite>();
             foreach (var sprite in selected)
             {
-                for (int i = 0; i < Konstants.MIN_CARDS_TO_MATCH; i++)
-                {
-                    result.Add(sprite);
-                }
+                result.AddRange(Enumerable.Repeat(sprite, Konstants.MIN_CARDS_TO_MATCH));
             }
             int pairsToAdd = totalPairs - uniqueSet;
             for (int i = 0; i < pairsToAdd; i++)
             {
                 var duplicate = selected[Random.Range(0, selected.Count)];
-                for (int j = 0; j < Konstants.MIN_CARDS_TO_MATCH; j++)
-                {
-                    result.Add(duplicate);
-                    result.Add(duplicate);
-                }
+                result.AddRange(Enumerable.Repeat(duplicate, Konstants.MIN_CARDS_TO_MATCH));
             }
             result = result.OrderBy(x => Random.value).ToList();
 
@@ -197,9 +191,9 @@ namespace CardGame
 
         private void Callback_On_Card_Match_Success(object args)
         {
-            var matchedCards = (List<BaseCard>)args;
-            foreach (var card in matchedCards)
-                _totalCards.Remove(card);
+            if (_totalCards.Any(x => x.CurrentState != CardState.Matched)) return;
+            //Level complete
+            GlobalVariables.isLevelComplete = true;
         }
     }
 

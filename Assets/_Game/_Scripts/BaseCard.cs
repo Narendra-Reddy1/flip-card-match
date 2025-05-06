@@ -15,11 +15,12 @@ namespace CardGame
         protected int _iconId;
         protected Sprite _targetIcon;
         protected Sprite _backFaceIcon;
-        protected bool _isFlipped = false;
         protected bool _isInteractable = true;
+        protected CardState _cardState = CardState.UnFlipped;
 
+
+        public CardState CurrentState => _cardState;
         public bool IsInteractable => _isInteractable;
-
         public int UniqueId => _uniqueId;
         public int IconId => _iconId;
         public Sprite TargetIcon => _targetIcon;
@@ -41,6 +42,7 @@ namespace CardGame
         {
 
         }
+
         public virtual void OnMatchSuccess()
         {
 
