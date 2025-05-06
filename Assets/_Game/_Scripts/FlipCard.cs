@@ -69,7 +69,7 @@ namespace CardGame
             {
                 ShowBackFace();
                 _isFlipped = false;
-                GlobalVariables.canTakeInput = true;
+                //GlobalVariables.canTakeInput = true;
             });
             Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
         }

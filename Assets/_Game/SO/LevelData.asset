@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: LevelData
   m_EditorClassIdentifier: 
   _gridSize: {x: 4, y: 6}
-  _uniqueSetsToSpawn: 2
+  _uniqueSetsToSpawn: 12
