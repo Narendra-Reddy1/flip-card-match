@@ -84,8 +84,8 @@ namespace CardGame
                 _playerData = new PlayerData();
                 _AddFirstStartData();
                 SaveData();
-                return;
             }
+            GlobalVariables.highestUnlockedLevelIndex = _playerData.levelIndex;
             Debug.Log("Done with Loading");
         }
 

@@ -16,8 +16,7 @@ namespace CardGame
         public override void OnPointerDown(PointerEventData eventData)
         {
             //if (!GlobalVariables.canTakeInput) return;
-            if (CurrentState is CardState.Revealed || CurrentState is CardState.Matched) return;
-            _cardState = CardState.Revealed;
+            if (CurrentState is not CardState.Hidden) return;
             Flip();
         }
         public override void OnPointerUp(PointerEventData eventData) { }
@@ -26,11 +25,11 @@ namespace CardGame
 
         public override void ShowFrontFace()
         {
+            _cardState = CardState.Revealed;
             transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
             {
                 _frontFaceParent.gameObject.SetActive(true);
                 transform.DORotate(Vector3.zero, .2f);
-                _cardState = CardState.Revealed;
             };
         }
         public override void ShowBackFace()
@@ -52,11 +51,11 @@ namespace CardGame
         }
         public override void OnMatchSuccess()
         {
-            DOVirtual.DelayedCall(0.25f, () =>
+            _cardState = CardState.Matched;
+            Debug.Log($">>Card State MATCHED:>>>");
+            DOVirtual.DelayedCall(0.5f, () =>
             {
-
                 //Show relted animation...
-                _cardState = CardState.Matched;
                 _canvasGroup.DOFade(0, .25f);
                 Debug.Log("success uid" + UniqueId + " " + _iconId);
             });
@@ -64,14 +63,11 @@ namespace CardGame
         public override void OnMatchFail()
         {
             //Show related animation....
-            DOVirtual.DelayedCall(0.25f, () =>
+            transform.DOShakeRotation(0.2f, Vector3.forward * 10).SetDelay(0.5f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad).onComplete += () =>
             {
-                transform.DOShakeRotation(0.5f, Vector3.forward * 10).onComplete += () =>
-                {
-                    ShowBackFace();
-                    Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
-                };
-            });
+                ShowBackFace();
+                Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
+            };
         }
 
     }

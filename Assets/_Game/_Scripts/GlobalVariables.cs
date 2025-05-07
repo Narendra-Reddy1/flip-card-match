@@ -16,5 +16,6 @@ namespace CardGame
 
         //PLayerData
         public static int highestUnlockedLevelIndex;
+        public static int highestUnlockedLevel => highestUnlockedLevelIndex + 1;
     }
 }

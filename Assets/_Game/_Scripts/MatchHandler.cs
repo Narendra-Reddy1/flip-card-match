@@ -29,21 +29,25 @@ namespace CardGame
             }
             else
             {
-                _flippedCards.Add(flippedCard);
-                List<BaseCard> cardsListCopy = new List<BaseCard>(_flippedCards);
-                if (_flippedCards.Any(x => x.IconId != flippedCard.IconId))
+                var copyList = new List<BaseCard>(_flippedCards)
                 {
-                    foreach (BaseCard card in _flippedCards)
+                    flippedCard
+                };
+                _flippedCards.Clear();
+                if (copyList.Any(x => x.IconId != flippedCard.IconId))
+                {
+                    foreach (BaseCard card in copyList)
                         card.OnMatchFail();
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, cardsListCopy);
+                    Debug.Log($"Match Failed for {copyList.Count}");
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, copyList);
                 }
                 else
                 {
-                    foreach (BaseCard card in _flippedCards)
+                    foreach (BaseCard card in copyList)
                         card.OnMatchSuccess();
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, cardsListCopy);
+                    Debug.Log($"Match Found for {copyList.Count}");
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, copyList);
                 }
-                _flippedCards.Clear();
             }
         }
     }

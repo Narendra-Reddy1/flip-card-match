@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CardGame
 {
-    public interface ILevelDataModel 
+    public interface ILevelDataModel
     {
     }
 }

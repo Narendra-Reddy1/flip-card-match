@@ -7,7 +7,7 @@ namespace CardGame
 {
     public partial class PlayerDataManager : MonoBehaviour
     {
-        public void SaveLevelData(int score, IEnumerable<BaseCard> cards)
+        public void SaveLevelData(int score, byte streak, IEnumerable<BaseCard> cards)
         {
             if (GlobalVariables.isLevelComplete) return;
             LevelDataModel leveldata;
@@ -21,6 +21,7 @@ namespace CardGame
                 leveldata = _playerData.levelDataModel as LevelDataModel;
             }
             leveldata.score = score;
+            leveldata.highestStreak = streak;
             leveldata.cardsData.Clear();
             foreach (BaseCard card in cards)
             {
@@ -33,6 +34,10 @@ namespace CardGame
             }
             SaveData();
         }
+        public LevelDataModel GetLevelData()
+        {
+            return _playerData.levelDataModel == null ? null : _playerData.levelDataModel as LevelDataModel;
+        }
         public bool HasLevelData()
         {
             return _playerData.levelDataModel != null;
@@ -40,12 +45,14 @@ namespace CardGame
         public void ClearLevelData()
         {
             _playerData.levelDataModel = null;
+            SaveData();
         }
     }
     [Serializable]
     public class LevelDataModel : ILevelDataModel
     {
         public int score;
+        public byte highestStreak;
         public List<CardData> cardsData;
         public LevelDataModel()
         {

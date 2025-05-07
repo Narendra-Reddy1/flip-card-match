@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using AYellowpaper.SerializedCollections;
 using System.Linq;
 using System.Collections.ObjectModel;
+using DG.Tweening;
 
 namespace CardGame
 {
@@ -67,9 +68,10 @@ namespace CardGame
             for (int i = 0; i < totalGridCells; i++)
             {
                 BaseCard card = Instantiate(_cardPrefab, _cardsParent);
-                var cardModel = savedLevelData.cardsData.Find(x => x.uniqueId == i);
+                // CardData cardModel = savedLevelData.cardsData.Find(x => x.uniqueId == i);
+                CardData cardModel = savedLevelData.cardsData[i];
 
-                card.Init(i, cardModel.uniqueId, sprites[cardModel.iconId]);
+                card.Init(i, cardModel.iconId, sprites[cardModel.iconId]);
                 if (cardModel.cardState is CardState.Matched)
                     card.OnMatchSuccess();
                 _totalCards.Add(card);
@@ -201,7 +203,15 @@ namespace CardGame
                     return (maxrows, Mathf.CeilToInt(childCount / (float)maxrows));
             }
         }
-
+        public void ResetState()
+        {
+            foreach (var card in _totalCards)
+            {
+                DOTween.KillAll(card);
+                Destroy(card.gameObject);
+            }
+            _totalCards.Clear();
+        }
         private (int rows, int cols) GetTotalPossibleDimenstiones(int childCount,
             RectTransform container
         )
@@ -215,7 +225,15 @@ namespace CardGame
         {
             if (_totalCards.Any(x => x.CurrentState != CardState.Matched)) return;
             //Level complete
+            Debug.Log("LEVE COMPLETE>>>>");
             GlobalVariables.isLevelComplete = true;
+            PlayerDataManager.instance.ClearLevelData();
+
+            DOVirtual.DelayedCall(1f, () =>//To complete animations 
+            {
+                ResetState();
+                GlobalEventHandler.TriggerEvent(EventID.OnLevelComplete);
+            });
         }
 
         private void Callback_On_New_Level_Requested(object args)

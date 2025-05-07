@@ -17,12 +17,26 @@ namespace CardGame
         private void OnEnable()
         {
             GlobalEventHandler.AddListener(EventID.OnCardMatchSuccess, Callback_On_Match_Success);
+            GlobalEventHandler.AddListener(EventID.OnLevelResumeRequested, Callback_On_Level_Resume_Requested);
         }
         private void OnDisable()
         {
             GlobalEventHandler.RemoveListener(EventID.OnCardMatchSuccess, Callback_On_Match_Success);
+            GlobalEventHandler.RemoveListener(EventID.OnLevelResumeRequested, Callback_On_Level_Resume_Requested);
         }
 
+        public void ResetState()
+        {
+            _score = 0;
+            _scoretxt.SetText("0");
+        }
+
+        private void Callback_On_Level_Resume_Requested(object args)
+        {
+            (LevelDataSO leveldata, LevelDataModel savedLevelData) = ((LevelDataSO, LevelDataModel))args;
+            _score = savedLevelData.score;
+            _scoretxt.SetText(savedLevelData.score.ToString());
+        }
         private void Callback_On_Match_Success(object args)
         {
 

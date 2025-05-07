@@ -24,7 +24,10 @@ namespace CardGame
         OnLoadingComplete,
         OnNewLevelRequested,
         OnLevelResumeRequested,
-        OnLevelStartRequested,
+        OnPlayLevelRequested,
         OnLevelQuitRequested,
+        OnGameStartRequested,
+        OnLevelComplete,
+        OnPlayerDataLoaded,
     }
 }

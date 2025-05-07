@@ -21,12 +21,18 @@ namespace CardGame
         {
             _ResetMatchMultiplier();
             GlobalEventHandler.AddListener(EventID.OnCardMatchSuccess, Callback_On_Match_Success);
+            GlobalEventHandler.RemoveListener(EventID.OnLevelResumeRequested, Callback_On_Level_Resume_Requested);
         }
         private void OnDisable()
         {
             GlobalEventHandler.RemoveListener(EventID.OnCardMatchSuccess, Callback_On_Match_Success);
+            GlobalEventHandler.RemoveListener(EventID.OnLevelResumeRequested, Callback_On_Level_Resume_Requested);
         }
-
+        public void ResetState()
+        {
+            _ResetMatchMultiplier();
+            _highestStreak = 0;
+        }
         private void _StartFillingDown()
         {
             DOTween.Kill(_streakFillbar);
@@ -51,8 +57,6 @@ namespace CardGame
 
         private void _ResetMatchMultiplier()
         {
-            if (_streakCounter > _highestStreak)
-                _highestStreak = _streakCounter;
             _streakCounter = 0;
             DOTween.Kill(_streakFillbar);
             DOTween.Kill(_streakTxt.transform);
@@ -61,10 +65,17 @@ namespace CardGame
         }
         private void _OnNewMatchMade()
         {
-            _streakCounter++;
             _StartFillingDown();
+            _streakCounter++;
+            if (_streakCounter > _highestStreak)
+                _highestStreak = _streakCounter;
         }
 
+        private void Callback_On_Level_Resume_Requested(object args)
+        {
+            (LevelDataSO leveldata, LevelDataModel savedLevelData) = ((LevelDataSO, LevelDataModel))args;
+            _highestStreak = savedLevelData.highestStreak;
+        }
         private void Callback_On_Match_Success(object args)
         {
             _OnNewMatchMade();
