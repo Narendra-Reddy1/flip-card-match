@@ -10,12 +10,11 @@ namespace CardGame
     {
         #region Variables
 
-        [SerializeField] private bool _dontDestroyOnLoad = true;
         [SerializeField] private Canvas _canvas;
         [SerializeField] private CanvasGroup _fader;
         [SerializeField] private Transform _aniamtedBg;
         [SerializeField] private Transform _gameTxt;
-        private static ScreenFader instance;
+
         #endregion Variables
 
         #region Unity Events
