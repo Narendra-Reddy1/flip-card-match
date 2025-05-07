@@ -9,6 +9,12 @@ using DG.Tweening;
 
 namespace CardGame
 {
+
+    /// <summary>
+    /// Responsible for spawning the cards based on the LevelData SO configuration.
+    /// Handles the card sizing based on the grid dimensions.
+    /// Tracking the spawned cards.
+    /// </summary>
     public class CardsManager : MonoBehaviour
     {
         [SerializeField] private BaseCard _cardPrefab;

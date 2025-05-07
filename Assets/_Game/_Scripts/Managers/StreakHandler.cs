@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 namespace CardGame
 {
+    /// <summary>
+    /// It is responsible for streak tracking.
+    /// </summary>
     public class StreakHandler : MonoBehaviour
     {
         [SerializeField] private Image _streakFillbar;

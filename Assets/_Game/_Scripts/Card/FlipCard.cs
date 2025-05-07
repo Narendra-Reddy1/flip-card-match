@@ -8,6 +8,11 @@ using UnityEngine.UI;
 namespace CardGame
 {
 
+    /// <summary>
+    /// This class handles the input.
+    /// Maintains card state like Revealed, Hidden, Matched.
+    /// Handles the animations.
+    /// </summary>
     public class FlipCard : BaseCard
     {
 
@@ -18,7 +23,7 @@ namespace CardGame
         {
             if (!GlobalVariables.canTakeInput) return;
             if (CurrentState is not CardState.Hidden) return;
-            Flip();
+            RevealTheCard();
         }
         public override void OnPointerUp(PointerEventData eventData) { }
 
@@ -27,12 +32,14 @@ namespace CardGame
         public override void RevealTheCard(System.Action onRevealed = null)
         {
             _cardState = CardState.Revealed;
+            GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.CardFlip);
             transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
             {
                 _questionMark.SetActive(false);
                 _frontFaceParent.gameObject.SetActive(true);
                 transform.DORotate(Vector3.zero, .2f).onComplete += () =>
                 {
+                    GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this);
                     onRevealed?.Invoke();
                 };
             };
@@ -49,12 +56,6 @@ namespace CardGame
         }
 
 
-
-        public override void Flip()
-        {
-            RevealTheCard(() => GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this));
-            GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.CardFlip);
-        }
         public override void OnMatchSuccess()
         {
             _cardState = CardState.Matched;

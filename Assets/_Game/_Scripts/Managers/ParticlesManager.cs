@@ -6,6 +6,10 @@ using UnityEngine.Pool;
 
 namespace CardGame
 {
+    /// <summary>
+    /// It manages the card match effect particles
+    /// using object pooling.
+    /// </summary>
     public class ParticlesManager : MonoBehaviour
     {
         [SerializeField] private UIParticle _matchParticlePrefab;

@@ -6,6 +6,11 @@ using UnityEngine;
 
 namespace CardGame
 {
+    /// <summary>
+    /// This class handles starting the level.
+    /// It acts as a middle man between the PlayerDataManager and rest of the components 
+    /// required to store persistently.
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
         //it's better to use DI here instead of manually mapping the dependencies...

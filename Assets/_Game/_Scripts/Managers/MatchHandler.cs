@@ -4,6 +4,12 @@ using System.Linq;
 using UnityEngine;
 namespace CardGame
 {
+    /// <summary>
+    /// It is responsible for matching the cards.
+    /// Depending on the MIN_CARDS_TO_MATCH constant it handles the card matching logic.
+    /// It is scalable to N-card matching. 
+    /// But changing the MIN_CARDS_TO_MATCH constant may required to update the level data SOs.
+    /// </summary>
     public class MatchHandler : MonoBehaviour
     {
         private List<BaseCard> _flippedCards = new List<BaseCard>();

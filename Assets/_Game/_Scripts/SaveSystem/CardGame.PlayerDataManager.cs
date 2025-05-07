@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace CardGame
 {
+    /// The project dependent code will be here.
     public partial class PlayerDataManager : MonoBehaviour
     {
         public void SaveLevelData(int score, byte streak, IEnumerable<BaseCard> cards)

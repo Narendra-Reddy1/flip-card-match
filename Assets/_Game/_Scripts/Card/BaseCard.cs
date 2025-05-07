@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 namespace CardGame
 {
-
+    /// <summary>
+    /// Base card implementation.
+    /// Provides interface for all the basic functionality
+    /// </summary>
     public class BaseCard : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         [SerializeField] protected Image _targetImg;

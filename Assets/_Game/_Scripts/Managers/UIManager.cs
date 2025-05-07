@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 namespace CardGame
 {
+    /// <summary>
+    /// It is a centralized class that handles UI related to multiple components.
+    /// Switching to Level and Home UI, Showing popups etc.
+    /// </summary>
     public class UIManager : MonoBehaviour
     {
 

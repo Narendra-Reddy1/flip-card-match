@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace CardGame
 {
+    /// <summary>
+    /// It is responsible for score tracking.
+    /// </summary>
     public class ScoreHandler : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _scoretxt;
