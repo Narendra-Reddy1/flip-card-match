@@ -34,9 +34,15 @@ namespace CardGame
         private IEnumerator Start()
         {
             ScreenFader.ToggleControlledFadeAnim(true);
+            if (PlayerPrefs.GetInt(Konstants.IS_FIRST_SESSION, 0) == 0)
+                GlobalVariables.isFirstSession = true;
             yield return new WaitUntil(PlayerDataManager.IsPlayerDataLoaded);
             GlobalEventHandler.TriggerEvent(EventID.OnPlayerDataLoaded);
+            yield return new WaitForSeconds(1.5f);//Just to show the splash screen.... :P
             ScreenFader.ToggleControlledFadeAnim(false);
+            yield return new WaitForSeconds(1);//Just to show the splash screen.... :P
+            GlobalEventHandler.TriggerEvent(EventID.OnGameInit);
+
         }
 
 

@@ -6,7 +6,9 @@ namespace CardGame
     public static class GlobalVariables
     {
 
+
         public static bool canTakeInput = true;
+        public static bool isFirstSession = false;
 
         public static bool isLevelComplete = false;
 

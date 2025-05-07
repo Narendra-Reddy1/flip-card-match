@@ -52,7 +52,6 @@ namespace CardGame
             var sprites = _spriteDatabase.GetCardSprites();
             List<Sprite> spritepairs = GetSpritePairs(sprites, totalGridCells, levelData.UniqueSets);
             _totalCards.Clear();
-            Debug.Log($"SPrite paris...{spritepairs.Count}");
             GlobalVariables.canTakeInput = false;
             for (int i = 0; i < totalGridCells; i++)
             {

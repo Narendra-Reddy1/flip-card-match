@@ -29,5 +29,6 @@ namespace CardGame
         OnGameStartRequested,
         OnLevelComplete,
         OnPlayerDataLoaded,
+        OnGameInit,
     }
 }

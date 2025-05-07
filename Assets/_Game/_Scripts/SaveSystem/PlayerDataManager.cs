@@ -22,7 +22,6 @@ namespace CardGame
         public event Func<bool> OnDataInitialized;
 
 
-        private const string IS_FIRST_SESSION = "IsFirstSession";
         #endregion
 
         #region Unity Built-In Methods
@@ -91,7 +90,7 @@ namespace CardGame
 
         private void _Init()
         {
-            if (!PlayerPrefs.HasKey(IS_FIRST_SESSION))
+            if (!PlayerPrefs.HasKey(Konstants.IS_FIRST_SESSION))
             {
                 //add default data....
                 _AddFirstStartData();
@@ -109,7 +108,7 @@ namespace CardGame
 
         private void _AddFirstStartData()
         {
-            PlayerPrefs.SetInt(IS_FIRST_SESSION, 1);
+            PlayerPrefs.SetInt(Konstants.IS_FIRST_SESSION, 1);
             _playerData = new PlayerData();
             //Add Default Data here.....
         }

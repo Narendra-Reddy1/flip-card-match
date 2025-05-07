@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 namespace CardGame
 {
@@ -16,6 +17,7 @@ namespace CardGame
 
         [Header("Home Screen")]
         [SerializeField] private Canvas _homeScreen;
+        [SerializeField] private MoscotHandler _moscotHandler;
         [SerializeField] private Button _playBtn;
         [SerializeField] private TextMeshProUGUI _homeScreenLevelTxt;
 
@@ -30,11 +32,13 @@ namespace CardGame
         [SerializeField] private StreakHandler _streakHandler;
 
 
+        private bool _isComingFromTheLevel = false;
+
 
         private void OnEnable()
         {
             _playBtn.onClick.AddListener(_OnPlayBtnClicked);
-            GlobalEventHandler.AddListener(EventID.OnPlayerDataLoaded, Callback_On_Player_Data_Loaded);
+            GlobalEventHandler.AddListener(EventID.OnGameInit, Callback_On_Game_Init);
             GlobalEventHandler.AddListener(EventID.OnLevelQuitRequested, Callback_On_HomeScreen_Requested);
             GlobalEventHandler.AddListener(EventID.OnGameStartRequested, Callback_On_Start_Game_Requested);
             GlobalEventHandler.AddListener(EventID.OnLevelComplete, Callback_On_Level_Complete);
@@ -42,7 +46,7 @@ namespace CardGame
         private void OnDisable()
         {
             _playBtn.onClick.RemoveListener(_OnPlayBtnClicked);
-            GlobalEventHandler.RemoveListener(EventID.OnPlayerDataLoaded, Callback_On_Player_Data_Loaded);
+            GlobalEventHandler.RemoveListener(EventID.OnGameInit, Callback_On_Game_Init);
             GlobalEventHandler.RemoveListener(EventID.OnLevelQuitRequested, Callback_On_HomeScreen_Requested);
             GlobalEventHandler.RemoveListener(EventID.OnGameStartRequested, Callback_On_Start_Game_Requested);
             GlobalEventHandler.RemoveListener(EventID.OnLevelComplete, Callback_On_Level_Complete);
@@ -54,6 +58,7 @@ namespace CardGame
         }
         private void _InitializeHomeScreen()
         {
+            _moscotHandler.Init();
             _homeScreenLevelTxt.SetText($"Level {GlobalVariables.highestUnlockedLevel}");
         }
 
@@ -62,6 +67,7 @@ namespace CardGame
             _homeScreen.enabled = false;
             _gameplayScreen.enabled = true;
             _inGameLevelTxt.SetText(GlobalVariables.highestUnlockedLevel.ToString());
+            _isComingFromTheLevel = true;
         }
 
         private void _GoToHomeScreen()
@@ -86,7 +92,7 @@ namespace CardGame
             });
         }
 
-        private void Callback_On_Player_Data_Loaded(object args)
+        private void Callback_On_Game_Init(object args)
         {
             _GoToHomeScreen();
         }

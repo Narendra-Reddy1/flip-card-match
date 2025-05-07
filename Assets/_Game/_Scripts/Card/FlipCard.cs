@@ -59,21 +59,16 @@ namespace CardGame
         public override void OnMatchSuccess()
         {
             _cardState = CardState.Matched;
-            Debug.Log($">>Card State MATCHED:>>>");
             DOVirtual.DelayedCall(0.5f, () =>
             {
-                //Show relted animation...
                 _canvasGroup.DOFade(0, .25f);
-                Debug.Log("success uid" + UniqueId + " " + _iconId);
             });
         }
         public override void OnMatchFail()
         {
-            //Show related animation....
             transform.DOShakeRotation(0.2f, Vector3.forward * 10).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad).onComplete += () =>
             {
                 HideTheCard();
-                Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
             };
         }
 

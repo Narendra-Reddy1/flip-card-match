@@ -20,5 +20,8 @@ namespace CardGame
         //PlayerPref Keys
         public const string MUSIC_KEY = "music_key";
         public const string SFX_KEY = "sfx_key";
+
+
+        public const string IS_FIRST_SESSION = "IsFirstSession";
     }
 }
