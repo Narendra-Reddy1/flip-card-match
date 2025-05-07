@@ -47,16 +47,23 @@ namespace CardGame
             List<Sprite> spritepairs = GetSpritePairs(sprites, totalGridCells, levelData.UniqueSets);
             _totalCards.Clear();
             Debug.Log($"SPrite paris...{spritepairs.Count}");
+            GlobalVariables.canTakeInput = false;
             for (int i = 0; i < totalGridCells; i++)
             {
                 BaseCard card = Instantiate(_cardPrefab, _cardsParent);
                 card.Init(i, sprites.IndexOf(spritepairs[i]), spritepairs[i], null);
                 _totalCards.Add(card);
+                card.ShowFrontFace();
                 //card.ShowFrontFace();
             }
-
             Vector2 cellSize = CalculateFit(this.gridLayoutGroup, this._cardsParent, levelData.GridSize);
             gridLayoutGroup.cellSize = cellSize;
+            DOVirtual.DelayedCall(Konstants.ICON_REVEAL_TIME_IN_SECONDS, () =>
+            {
+                foreach (var card in _totalCards)
+                    card.ShowBackFace();
+                GlobalVariables.canTakeInput = true;
+            });
         }
 
         //resuming the previous level.....

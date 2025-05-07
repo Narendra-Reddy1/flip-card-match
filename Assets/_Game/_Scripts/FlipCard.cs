@@ -15,7 +15,7 @@ namespace CardGame
 
         public override void OnPointerDown(PointerEventData eventData)
         {
-            //if (!GlobalVariables.canTakeInput) return;
+            if (!GlobalVariables.canTakeInput) return;
             if (CurrentState is not CardState.Hidden) return;
             Flip();
         }
