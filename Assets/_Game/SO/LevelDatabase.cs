@@ -7,16 +7,16 @@ namespace CardGame
     [CreateAssetMenu(fileName = "newLevelDatabase", menuName = "SO/LevelDatabase")]
     public class LevelDatabase : ScriptableObject
     {
-        [SerializeField] private List<LevelData> _levels;
+        [SerializeField] private List<LevelDataSO> _levels;
 
 
 
-        public LevelData GetLevelSafely(int level)
+        public LevelDataSO GetLevelSafely(int level)
         {
             level = Mathf.Abs(level);
             return _levels[level % _levels.Count];
         }
-        public LevelData GetLevel(int level)
+        public LevelDataSO GetLevel(int level)
         {
             if (level < 0 || level > _levels.Count) return null;
             return _levels[level];

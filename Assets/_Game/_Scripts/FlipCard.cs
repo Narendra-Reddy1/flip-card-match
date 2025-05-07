@@ -12,16 +12,6 @@ namespace CardGame
     {
 
         [SerializeField] private Transform _frontFaceParent;
-        private Vector3 _rightAngle = new Vector3(0, 90, 0);
-        public override void Init(int uniqueId, int iconId, Sprite targetIcon, Sprite backIcon)
-        {
-            this._uniqueId = uniqueId;
-            this._iconId = iconId;
-            _targetIcon = targetIcon;
-            _backFaceIcon = backIcon;
-            _targetImg.sprite = _targetIcon;
-        }
-
 
         public override void OnPointerDown(PointerEventData eventData)
         {
@@ -36,7 +26,7 @@ namespace CardGame
 
         public override void ShowFrontFace()
         {
-            transform.DORotate(_rightAngle, .2f).onComplete += () =>
+            transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
             {
                 _frontFaceParent.gameObject.SetActive(true);
                 transform.DORotate(Vector3.zero, .2f);
@@ -45,12 +35,12 @@ namespace CardGame
         }
         public override void ShowBackFace()
         {
-            transform.DORotate(_rightAngle, .2f).onComplete += () =>
-            {
-                _frontFaceParent.gameObject.SetActive(false);
-                transform.DORotate(Vector3.zero, .2f);
-                _cardState = CardState.Hidden;
-            };
+            transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
+              {
+                  _frontFaceParent.gameObject.SetActive(false);
+                  transform.DORotate(Vector3.zero, .2f);
+                  _cardState = CardState.Hidden;
+              };
         }
 
 
@@ -62,18 +52,26 @@ namespace CardGame
         }
         public override void OnMatchSuccess()
         {
-            //Show relted animation...
-            _cardState = CardState.Matched;
-            Debug.Log("success uid" + UniqueId + " " + _iconId);
+            DOVirtual.DelayedCall(0.25f, () =>
+            {
+
+                //Show relted animation...
+                _cardState = CardState.Matched;
+                _canvasGroup.DOFade(0, .25f);
+                Debug.Log("success uid" + UniqueId + " " + _iconId);
+            });
         }
         public override void OnMatchFail()
         {
             //Show related animation....
-            DOVirtual.DelayedCall(.5f, () =>
+            DOVirtual.DelayedCall(0.25f, () =>
             {
-                ShowBackFace();
+                transform.DOShakeRotation(0.5f, Vector3.forward * 10).onComplete += () =>
+                {
+                    ShowBackFace();
+                    Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
+                };
             });
-            Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
         }
 
     }

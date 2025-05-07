@@ -13,7 +13,7 @@ namespace CardGame
         [SerializeField] private BaseCard _cardPrefab;
         [SerializeField] private GridLayoutGroup gridLayoutGroup;
         [SerializeField] private RectTransform _cardsParent;
-        [SerializeField] private LevelData data;
+        [SerializeField] private LevelDataSO data;
         [SerializeField] private SpriteDatabase _spriteDatabase;
 
         public Vector2 minCellSize = Vector2.one;
@@ -25,28 +25,26 @@ namespace CardGame
         private void OnEnable()
         {
             GlobalEventHandler.AddListener(EventID.OnCardMatchSuccess, Callback_On_Card_Match_Success);
+            GlobalEventHandler.AddListener(EventID.OnNewLevelRequested, Callback_On_New_Level_Requested);
+            GlobalEventHandler.AddListener(EventID.OnLevelResumeRequested, Callback_On_Level_Resume_Requested);
         }
         private void OnDisable()
         {
             GlobalEventHandler.RemoveListener(EventID.OnCardMatchSuccess, Callback_On_Card_Match_Success);
-        }
-
-
-
-        void Start()
-        {
-            Init(data);
+            GlobalEventHandler.RemoveListener(EventID.OnNewLevelRequested, Callback_On_New_Level_Requested);
+            GlobalEventHandler.RemoveListener(EventID.OnLevelResumeRequested, Callback_On_Level_Resume_Requested);
         }
 
         ///this will take the level data
         ///spawns the number of cards
         /// initialize each with an icon id, unique id, and sprite and backface sprite
-        public void Init(LevelData levelData)
+        public void Init(LevelDataSO levelData)
         {
             //first get the images...for the grid.
             int totalGridCells = levelData.GridSize.x * levelData.GridSize.y;
             var sprites = _spriteDatabase.GetCardSprites();
             List<Sprite> spritepairs = GetSpritePairs(sprites, totalGridCells, levelData.UniqueSets);
+            _totalCards.Clear();
             Debug.Log($"SPrite paris...{spritepairs.Count}");
             for (int i = 0; i < totalGridCells; i++)
             {
@@ -59,6 +57,30 @@ namespace CardGame
             Vector2 cellSize = CalculateFit(this.gridLayoutGroup, this._cardsParent, levelData.GridSize);
             gridLayoutGroup.cellSize = cellSize;
         }
+
+        //resuming the previous level.....
+        public void Init(LevelDataSO levelData, LevelDataModel savedLevelData)
+        {
+            int totalGridCells = levelData.GridSize.x * levelData.GridSize.y;
+            var sprites = _spriteDatabase.GetCardSprites();
+            _totalCards.Clear();
+            for (int i = 0; i < totalGridCells; i++)
+            {
+                BaseCard card = Instantiate(_cardPrefab, _cardsParent);
+                var cardModel = savedLevelData.cardsData.Find(x => x.uniqueId == i);
+
+                card.Init(i, cardModel.uniqueId, sprites[cardModel.iconId]);
+                if (cardModel.cardState is CardState.Matched)
+                    card.OnMatchSuccess();
+                _totalCards.Add(card);
+                //card.ShowFrontFace();
+            }
+
+            Vector2 cellSize = CalculateFit(this.gridLayoutGroup, this._cardsParent, levelData.GridSize);
+            gridLayoutGroup.cellSize = cellSize;
+        }
+
+
         public List<Sprite> GetSpritePairs(ReadOnlyCollection<Sprite> _cardSprites, int totalGridCells, int uniqueSet)
         {
             if (totalGridCells % Konstants.MIN_CARDS_TO_MATCH != 0)
@@ -195,6 +217,19 @@ namespace CardGame
             //Level complete
             GlobalVariables.isLevelComplete = true;
         }
+
+        private void Callback_On_New_Level_Requested(object args)
+        {
+            Init(args as LevelDataSO);
+        }
+        private void Callback_On_Level_Resume_Requested(object args)
+        {
+
+            (LevelDataSO leveldata, LevelDataModel savedLevelData) = ((LevelDataSO, LevelDataModel))args;
+            Init(leveldata, savedLevelData);
+
+        }
     }
+
 
 }

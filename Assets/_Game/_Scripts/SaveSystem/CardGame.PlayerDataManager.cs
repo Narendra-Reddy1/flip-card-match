@@ -18,7 +18,7 @@ namespace CardGame
             }
             else
             {
-                leveldata = (LevelDataModel)_playerData.levelDataModel;
+                leveldata = _playerData.levelDataModel as LevelDataModel;
             }
             leveldata.score = score;
             leveldata.cardsData.Clear();
@@ -33,7 +33,10 @@ namespace CardGame
             }
             SaveData();
         }
-
+        public bool HasLevelData()
+        {
+            return _playerData.levelDataModel != null;
+        }
         public void ClearLevelData()
         {
             _playerData.levelDataModel = null;

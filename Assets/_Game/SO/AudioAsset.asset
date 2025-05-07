@@ -13,4 +13,12 @@ MonoBehaviour:
   m_Name: AudioAsset
   m_EditorClassIdentifier: 
   _audioDatabase:
-    _serializedList: []
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 8300000, guid: b2b00194440c8c7478c32d6436e8851a, type: 3}
+    - Key: 1
+      Value: {fileID: 8300000, guid: d817adcaaebd3764096956beb4518be8, type: 3}
+    - Key: 2
+      Value: {fileID: 8300000, guid: a0ca4dc3327162b4aa7179ff839cb3a9, type: 3}
+    - Key: 3
+      Value: {fileID: 8300000, guid: 18622a71466a7954ea0cba13d9874a3b, type: 3}

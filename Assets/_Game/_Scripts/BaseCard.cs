@@ -27,7 +27,32 @@ namespace CardGame
 
         public virtual void Init(int uniqueId, int iconId, Sprite targetIcon, Sprite backIcon)
         {
+            this._uniqueId = uniqueId;
+            this._iconId = iconId;
+            _targetIcon = targetIcon;
+            _backFaceIcon = backIcon;
+            _targetImg.sprite = _targetIcon;
         }
+        public virtual void Init(int uniqueId, int iconId, Sprite targetIcon)
+        {
+            this._uniqueId = uniqueId;
+            this._iconId = iconId;
+            _targetIcon = targetIcon;
+            _targetImg.sprite = _targetIcon;
+        }
+        public virtual void Init(int uniqueId, int iconId)
+        {
+            this._uniqueId = uniqueId;
+            this._iconId = iconId;
+        }
+        public virtual void SetIcons(Sprite targetSprite, Sprite backFaceIcon = null)
+        {
+            _targetIcon = targetSprite;
+            _backFaceIcon = backFaceIcon;
+            _targetImg.sprite = _targetIcon;
+        }
+
+
         public virtual void OnPointerDown(PointerEventData eventData)
         {
         }

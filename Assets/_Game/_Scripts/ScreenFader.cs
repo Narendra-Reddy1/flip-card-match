@@ -1,0 +1,106 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using DG.Tweening;
+using UnityEngine;
+
+namespace CardGame
+{
+    public class ScreenFader : MonoBehaviour
+    {
+        #region Variables
+
+        [SerializeField] private bool _dontDestroyOnLoad = true;
+        [SerializeField] private Canvas _canvas;
+        [SerializeField] private CanvasGroup _fader;
+        private static ScreenFader instance;
+        #endregion Variables
+
+        #region Unity Events
+        private static System.Action<bool> ToggleControlledLoadingScreen = default;
+        private void Awake()
+        {
+            ToggleControlledLoadingScreen += OnControlledLoadingScreenRequested;
+
+        }
+        private void OnDestroy()
+        {
+            ToggleControlledLoadingScreen -= OnControlledLoadingScreenRequested;
+        }
+        void OnEnable()
+        {
+            GlobalEventHandler.AddListener(EventID.RequestQuickLoadingScreen, Callback_On_Quick_Fade_Requested);
+        }
+        void OnDisable()
+        {
+            GlobalEventHandler.RemoveListener(EventID.RequestQuickLoadingScreen, Callback_On_Quick_Fade_Requested);
+        }
+
+
+        #endregion Unity Events
+
+        #region Public Methods
+
+        public static void ToggleControlledFadeAnim(bool value)
+        {
+            ToggleControlledLoadingScreen?.Invoke(value);
+        }
+        #endregion Public Methods
+
+        #region Private Methods
+     
+
+        private bool _isControlledLoading = false;
+        private void _ShowControlledLoading()
+        {
+            if (_isControlledLoading) return;
+            _canvas.enabled = true;
+            _isControlledLoading = true;
+            _fader.DOFade(1f, .1f);
+
+        }
+        private void _DisableControlledLoading()
+        {
+            if (!_isControlledLoading) return;
+
+            _fader.DOFade(0, .7f).SetDelay(Random.Range(0.2f, 0.4f)).onComplete += () =>
+            {
+                _isControlledLoading = false;
+                _canvas.enabled = false;
+                _fader.alpha = 0;
+
+                DOTween.Kill(_fader);
+                GlobalEventHandler.TriggerEvent(EventID.OnLoadingComplete);
+            };
+        }
+
+
+
+      
+        private void OnControlledLoadingScreenRequested(bool value)
+        {
+            if (value)
+                _ShowControlledLoading();
+            else
+                _DisableControlledLoading();
+        }
+        #endregion Private Methods
+
+        #region Callbacks
+
+        private void Callback_On_Quick_Fade_Requested(object obj)
+        {
+            _canvas.enabled = true;
+            _fader.DOFade(1, 0.1f).From(0).onComplete += () =>
+            {
+                _fader.DOFade(0, .5f).From(1).SetDelay(.5f).onComplete += () =>
+                {
+                    _canvas.enabled = false;
+                };
+            };
+        }
+
+        #endregion Callbacks
+
+    }
+}

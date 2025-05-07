@@ -18,5 +18,13 @@ namespace CardGame
         OnToggleSFX,
         OnToggleMusic,
         RequestToStopSFX,
+
+        //Loading
+        RequestQuickLoadingScreen,
+        OnLoadingComplete,
+        OnNewLevelRequested,
+        OnLevelResumeRequested,
+        OnLevelStartRequested,
+        OnLevelQuitRequested,
     }
 }

@@ -68,6 +68,7 @@ namespace CardGame
         {
             _playerData.levelIndex = GlobalVariables.highestUnlockedLevelIndex;
             DataSerializer.Save("playerData.dat", _playerData);
+            Debug.Log("Done with Saving....");
         }
 
         /// <summary>
@@ -124,6 +125,11 @@ namespace CardGame
     {
         public int levelIndex;
         public ILevelDataModel levelDataModel;
+        public PlayerData()
+        {
+            levelIndex = 0;
+            levelDataModel = null;
+        }
     }
 
 

@@ -3,7 +3,10 @@ guid: 2db5c81e4bc8c274abb2a8ee338035d1
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _scoreHandler: {instanceID: 0}
+  - _cardsManager: {instanceID: 0}
+  - _levelDatabase: {fileID: 11400000, guid: 797a081db6c5ca04fa2b144763a60786, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CardGame
 {
     [CreateAssetMenu(fileName = "newLevelData", menuName = "SO/Levels/New Level")]
-    public class LevelData : ScriptableObject
+    public class LevelDataSO : ScriptableObject
     {
         [SerializeField] private Vector2Int _gridSize;
 
