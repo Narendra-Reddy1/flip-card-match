@@ -27,6 +27,8 @@ namespace CardGame
         ButtonClickSFX,
         MatchFailSFX,
         MatchSuccessSFX,
+        CardFlip,
+
     }
 
 }

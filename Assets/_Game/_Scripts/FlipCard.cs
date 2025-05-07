@@ -47,6 +47,7 @@ namespace CardGame
         public override void Flip()
         {
             ShowFrontFace();
+            GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.CardFlip);
             GlobalEventHandler.TriggerEvent(EventID.OnCardFlipped, this);
         }
         public override void OnMatchSuccess()

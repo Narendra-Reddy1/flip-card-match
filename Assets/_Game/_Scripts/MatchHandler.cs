@@ -39,6 +39,7 @@ namespace CardGame
                     foreach (BaseCard card in copyList)
                         card.OnMatchFail();
                     Debug.Log($"Match Failed for {copyList.Count}");
+                    GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.MatchFailSFX);
                     GlobalEventHandler.TriggerEvent(EventID.OnCardMatchFailed, copyList);
                 }
                 else
@@ -46,6 +47,7 @@ namespace CardGame
                     foreach (BaseCard card in copyList)
                         card.OnMatchSuccess();
                     Debug.Log($"Match Found for {copyList.Count}");
+                    GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.MatchSuccessSFX);
                     GlobalEventHandler.TriggerEvent(EventID.OnCardMatchSuccess, copyList);
                 }
             }
