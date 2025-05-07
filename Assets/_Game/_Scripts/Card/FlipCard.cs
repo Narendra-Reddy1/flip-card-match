@@ -23,14 +23,17 @@ namespace CardGame
         {
             if (!GlobalVariables.canTakeInput) return;
             if (CurrentState is not CardState.Hidden) return;
-            RevealTheCard(() => GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this));
+            RevealTheCard(() =>
+            {
+                GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.CardFlip);
+                GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this);
+            });
         }
 
 
         public override void RevealTheCard(System.Action onRevealed = null)
         {
             _cardState = CardState.Revealed;
-            GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.CardFlip);
             transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
             {
                 _questionMark.SetActive(false);
