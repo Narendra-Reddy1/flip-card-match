@@ -23,10 +23,8 @@ namespace CardGame
         {
             if (!GlobalVariables.canTakeInput) return;
             if (CurrentState is not CardState.Hidden) return;
-            RevealTheCard();
+            RevealTheCard(() => GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this));
         }
-        public override void OnPointerUp(PointerEventData eventData) { }
-
 
 
         public override void RevealTheCard(System.Action onRevealed = null)
@@ -39,7 +37,6 @@ namespace CardGame
                 _frontFaceParent.gameObject.SetActive(true);
                 transform.DORotate(Vector3.zero, .2f).onComplete += () =>
                 {
-                    GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this);
                     onRevealed?.Invoke();
                 };
             };
