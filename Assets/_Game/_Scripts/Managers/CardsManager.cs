@@ -53,7 +53,7 @@ namespace CardGame
                 BaseCard card = Instantiate(_cardPrefab, _cardsParent);
                 card.Init(i, sprites.IndexOf(spritepairs[i]), spritepairs[i], null);
                 _totalCards.Add(card);
-                card.ShowFrontFace();
+                card.RevealTheCard();
                 //card.ShowFrontFace();
             }
             Vector2 cellSize = CalculateFit(this.gridLayoutGroup, this._cardsParent, levelData.GridSize);
@@ -61,7 +61,7 @@ namespace CardGame
             DOVirtual.DelayedCall(Konstants.ICON_REVEAL_TIME_IN_SECONDS, () =>
             {
                 foreach (var card in _totalCards)
-                    card.ShowBackFace();
+                    card.HideTheCard();
                 GlobalVariables.canTakeInput = true;
             });
         }

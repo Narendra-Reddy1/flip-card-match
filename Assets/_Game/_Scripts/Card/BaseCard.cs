@@ -75,11 +75,11 @@ namespace CardGame
         {
 
         }
-        public virtual void ShowFrontFace()
+        public virtual void RevealTheCard(System.Action onRevealed = null)
         {
 
         }
-        public virtual void ShowBackFace() { }
+        public virtual void HideTheCard() { }
     }
 
 }

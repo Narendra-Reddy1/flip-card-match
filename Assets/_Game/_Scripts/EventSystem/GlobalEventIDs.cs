@@ -4,7 +4,7 @@ namespace CardGame
     {
 
         ///Level
-        OnCardFlipped,
+        OnCardRevealed,
         OnCardMatchSuccess,
         OnCardMatchFailed,
 

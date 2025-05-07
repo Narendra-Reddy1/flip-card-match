@@ -12,6 +12,7 @@ namespace CardGame
     {
 
         [SerializeField] private Transform _frontFaceParent;
+        [SerializeField] private GameObject _questionMark;
 
         public override void OnPointerDown(PointerEventData eventData)
         {
@@ -23,19 +24,24 @@ namespace CardGame
 
 
 
-        public override void ShowFrontFace()
+        public override void RevealTheCard(System.Action onRevealed = null)
         {
             _cardState = CardState.Revealed;
             transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
             {
+                _questionMark.SetActive(false);
                 _frontFaceParent.gameObject.SetActive(true);
-                transform.DORotate(Vector3.zero, .2f);
+                transform.DORotate(Vector3.zero, .2f).onComplete += () =>
+                {
+                    onRevealed?.Invoke();
+                };
             };
         }
-        public override void ShowBackFace()
+        public override void HideTheCard()
         {
             transform.DORotate(Vector3.up * 90, .2f).onComplete += () =>
               {
+                  _questionMark.SetActive(true);
                   _frontFaceParent.gameObject.SetActive(false);
                   transform.DORotate(Vector3.zero, .2f);
                   _cardState = CardState.Hidden;
@@ -46,9 +52,8 @@ namespace CardGame
 
         public override void Flip()
         {
-            ShowFrontFace();
+            RevealTheCard(() => GlobalEventHandler.TriggerEvent(EventID.OnCardRevealed, this));
             GlobalEventHandler.TriggerEvent(EventID.RequestToPlaySFXWithId, AudioID.CardFlip);
-            GlobalEventHandler.TriggerEvent(EventID.OnCardFlipped, this);
         }
         public override void OnMatchSuccess()
         {
@@ -64,9 +69,9 @@ namespace CardGame
         public override void OnMatchFail()
         {
             //Show related animation....
-            transform.DOShakeRotation(0.2f, Vector3.forward * 10).SetDelay(0.5f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad).onComplete += () =>
+            transform.DOShakeRotation(0.2f, Vector3.forward * 10).SetLoops(2, LoopType.Yoyo).SetEase(Ease.OutQuad).onComplete += () =>
             {
-                ShowBackFace();
+                HideTheCard();
                 Debug.Log("FAIL uid" + UniqueId + " " + _iconId);
             };
         }

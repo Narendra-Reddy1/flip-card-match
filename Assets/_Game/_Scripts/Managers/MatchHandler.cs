@@ -10,11 +10,11 @@ namespace CardGame
 
         private void OnEnable()
         {
-            GlobalEventHandler.AddListener(EventID.OnCardFlipped, Callback_On_Card_Flipped);
+            GlobalEventHandler.AddListener(EventID.OnCardRevealed, Callback_On_Card_Flipped);
         }
         private void OnDisable()
         {
-            GlobalEventHandler.RemoveListener(EventID.OnCardFlipped, Callback_On_Card_Flipped);
+            GlobalEventHandler.RemoveListener(EventID.OnCardRevealed, Callback_On_Card_Flipped);
         }
 
 
