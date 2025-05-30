@@ -1,4 +1,4 @@
-# psdsdnpskaqw
+# Flip Card Match
 
 Welcome to **psdsdnpskaqw**, a fun and visually appealing card-matching memory game.
 This document outlines the structure, functionality, and core logic of the project for the people who want to understand the project.
